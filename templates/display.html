@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casa Domótica - Visualización</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a2e;
+            color: white;
+            overflow-y: auto;
+        }
+        
+        .header {
+            background: #16213e;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 3px solid #0f3460;
+        }
+        
+        h1 {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+        .house-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+            min-height: calc(100vh - 100px);
+        }
+        
+        .room {
+            background: #16213e;
+            border: 2px solid #0f3460;
+            border-radius: 15px;
+            padding: 20px;
+            position: relative;
+            transition: all 0.3s;
+            height: fit-content;
+        }
+        
+        .room:hover {
+            border-color: #4a90e2;
+            transform: translateY(-5px);
+        }
+        
+        .room-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #4a90e2;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .device-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            margin: 8px 0;
+            background: #0f3460;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .device-item.active {
+            background: #1e5f8c;
+            box-shadow: 0 0 15px rgba(74, 144, 226, 0.5);
+        }
+        
+        .device-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+        
+        .device-icon {
+            font-size: 24px;
+        }
+        
+        .device-status {
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        
+        .status-on {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .status-off {
+            background: #555;
+            color: #aaa;
+        }
+        
+        .status-open {
+            background: #e67e22;
+            color: white;
+        }
+        
+        .status-closed {
+            background: #555;
+            color: #aaa;
+        }
+        
+        .temp-display {
+            font-size: 12px;
+            color: #4a90e2;
+            margin-left: 10px;
+        }
+        
+        .camera-feed {
+            width: 100%;
+            height: 120px;
+            background: #000;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4a90e2;
+            font-size: 12px;
+            border: 2px solid #0f3460;
+        }
+        
+        .camera-feed.active {
+            border-color: #27ae60;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(39, 174, 96, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(39, 174, 96, 0.8); }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>CASA</h1>
+        <p class="subtitle">Sistema de Visualización en Tiempo Real</p>
+    </div>
+    
+    <div class="house-container">
+        <!-- Dormitorio 1 -->
+        <div class="room">
+            <div class="room-title">🛏️ Dormitorio 1</div>
+            <div id="luz_dormitorio1" class="device-item">
+                <div class="device-name">
+                    <span class="device-icon">💡</span>
+                    <span>Luz</span>
+                </div>
+                <span class="device-status">OFF</span>
+            </div>
+            <div id="aire_dormitorio1" class="device-item">
+                <div class="device-name">
+                    <span class="device-icon">❄️</span>
+                    <span>Aire Acondicionado</span>
+                    <span class="temp-display">24°C</span>
+                </div>
+                <span class="device-status">OFF</span>
+            </div>
+        </div>
+        
+        <!-- Dormitorio 2 -->
+        <div class="room">
+            <div class="room-title">🛏️ Dormitorio 2</div>
+            <div id="luz_dormitorio2" class="device-item">
+                <div class="device-name">
+                    <span class="device-icon">💡</span>
+                    <span>Luz</span>
+                </div>
+                <span class="device-status">OFF</span>
+            </div>
+            <div id="aire_dormitorio2" class="device-item">
+                <div class="device-name">
+                    <span class="device-icon">❄️</span>
+                    <span>Aire Acondicionado</span>
+                    <span class="temp-display">24°C</span>
+                </div>
+                <span class="device-status">OFF</span>
+            </div>
+        </div>
+        
+        <!-- Living -->
+        <div class="room">
+            <div class="room-title">🛋️ Living</div>
+            <div id="luz_living" class="device-item">
+                <div class="device-name">
+                    <span class="device-icon">💡</span>
+                    <span>Luz</span>
+                </div>
+                <span class="device-status">OFF</span>
+            </div>
+            <div id="aire_living" class="device-item">
+                <div class="device-name">
+                    <span class="device-icon">❄️</span>
+                    <span>Aire Acondicionado</span>
+                    <span class="temp-display">24°C</span>
+                </div>
+                <span class="device-status">OFF</span>
+            </div>
+            <div id="tv_living" class="device-item">
+                <div class="device-name">
+                    <span class="device-icon">📺</span>
+                    <span>Televisor</span>
+                </div>
+                <span class="device-status">OFF</span>
+            </div>
+            <div id="camara_living" class="device-item">
+                <div class="device-name">
+                    <span class="device-icon">📹</span>
+                    <span>Cámara</span>
+                </div>
+                <span class="device-status">ON</span>
+            </div>
+            <div class="camera-feed active">🔴 GRABANDO</div>
+        </div>
+        
+        <!-- Cocina -->
+        <div class="room">
+            <div class="room-title">🍳 Cocina</div>
+            <div id="luz_cocina" class="device-item">
+                <div class="device-name">
+                    <span class="device-icon">💡</span>
+                    <span>Luz</span>
+                </div>
+                <span class="device-status">OFF</span>
+            </div>
+            <div id="ventilador_cocina" class="device-item">
+                <div class="device-name">
+                    <span class="device-icon">🌀</span>
+                    <span>Ventilador</span>
+                </div>
+                <span class="device-status">OFF</span>
+            </div>
+        </div>
+        
+        <!-- Baño -->
+        <div class="room">
+            <div class="room-title">🚿 Baño</div>
+            <div id="luz_bano" class="device-item">
+                <div class="device-name">
+                    <span class="device-icon">💡</span>
+                    <span>Luz</span>
+                </div>
+                <span class="device-status">OFF</span>
+            </div>
+        </div>
+        
+        <!-- Garaje y Exterior -->
+        <div class="room">
+            <div class="room-title">🚗 Garaje / Exterior</div>
+            <div id="luz_garaje" class="device-item">
+                <div class="device-name">
+                    <span class="device-icon">💡</span>
+                    <span>Luz Garaje</span>
+                </div>
+                <span class="device-status">OFF</span>
+            </div>
+            <div id="porton_garaje" class="device-item">
+                <div class="device-name">
+                    <span class="device-icon">🚪</span>
+                    <span>Portón</span>
+                </div>
+                <span class="device-status">CERRADO</span>
+            </div>
+            <div id="puerta_principal" class="device-item">
+                <div class="device-name">
+                    <span class="device-icon">🚪</span>
+                    <span>Puerta Principal</span>
+                </div>
+                <span class="device-status">CERRADA</span>
+            </div>
+            <div id="camara_exterior" class="device-item">
+                <div class="device-name">
+                    <span class="device-icon">📹</span>
+                    <span>Cámara Exterior</span>
+                </div>
+                <span class="device-status">ON</span>
+            </div>
+            <div class="camera-feed active">🔴 GRABANDO</div>
+        </div>
+    </div>
+    
+    <script>
+        async function updateDisplay() {
+            try {
+                const response = await fetch('/api/status');
+                const devices = await response.json();
+                
+                for (const [deviceId, deviceData] of Object.entries(devices)) {
+                    const element = document.getElementById(deviceId);
+                    if (!element) continue;
+                    
+                    const statusSpan = element.querySelector('.device-status');
+                    const tempDisplay = element.querySelector('.temp-display');
+                    
+                    // Actualizar clase active
+                    if (deviceData.state) {
+                        element.classList.add('active');
+                    } else {
+                        element.classList.remove('active');
+                    }
+                    
+                    // Actualizar texto de estado
+                    if (deviceData.type === 'door' || deviceData.type === 'garage') {
+                        statusSpan.textContent = deviceData.state ? 'ABIERTA' : 'CERRADA';
+                        statusSpan.className = deviceData.state ? 'device-status status-open' : 'device-status status-closed';
+                    } else {
+                        statusSpan.textContent = deviceData.state ? 'ON' : 'OFF';
+                        statusSpan.className = deviceData.state ? 'device-status status-on' : 'device-status status-off';
+                    }
+                    
+                    // Actualizar temperatura si es aire acondicionado
+                    if (deviceData.type === 'ac' && tempDisplay) {
+                        tempDisplay.textContent = deviceData.temp + '°C';
+                    }
+                }
+            } catch (error) {
+                console.error('Error al actualizar:', error);
+            }
+        }
+        
+        // Actualizar cada 1 segundo
+        updateDisplay();
+        setInterval(updateDisplay, 1000);
+    </script>
+</body>
+</html>
